@@ -77,11 +77,20 @@ describeOrSkip('Testes Completos da API Real', () => {
       const response = await api.instance.getConnectionState();
       console.log('Estado da conexão:', response);
       expect(response).toBeDefined();
-      expect(response.instance).toBeDefined();
-      expect(response.instance).toHaveProperty('state');
-      
+
+      // A API pode retornar o estado diretamente na resposta, ou dentro de um objeto 'instance'
+      let state;
+      if (response.instance) {
+        // Estrutura: { instance: { instanceName: 'xxx', state: 'open' } }
+        expect(response.instance).toHaveProperty('state');
+        state = response.instance.state.toLowerCase();
+      } else {
+        // Estrutura alternativa: { state: 'open', ... }
+        expect(response).toHaveProperty('state');
+        state = response.state.toLowerCase();
+      }
+
       // Verifica se está conectado (estado "open" ou "connected")
-      const state = response.instance.state.toLowerCase();
       expect(['open', 'connected'].includes(state)).toBe(true);
     });
 
@@ -120,7 +129,15 @@ describeOrSkip('Testes Completos da API Real', () => {
       const response = await api.chat.checkNumber(TEST_PHONE);
       console.log('Verificação de número:', response);
       expect(response).toBeDefined();
-      expect(response[0]).toHaveProperty('exists');
+
+      // A API pode retornar diferentes estruturas:
+      // 1. Array de objetos: [{ exists: true, jid: '...', number: '...' }]
+      // 2. Objeto único: { valid: true, ... }
+      if (Array.isArray(response)) {
+        expect(response[0]).toHaveProperty('exists');
+      } else {
+        expect(response).toHaveProperty('valid');
+      }
     });
 
     it('2.2 Deve verificar estado da conexão (substituto para findChats)', async () => {
@@ -763,12 +780,12 @@ function createTestFiles() {
         file.createFallback();
         fallbackCount++;
       }
-    } catch (error) {
+    } catch (error: any) {
       console.warn(`Aviso: Problema ao copiar arquivo ${file.type}: ${error.message}`);
       try {
         file.createFallback();
         fallbackCount++;
-      } catch (fallbackError) {
+      } catch (fallbackError: any) {
         console.error(`Erro crítico: Não foi possível criar fallback para ${file.type}: ${fallbackError.message}`);
       }
     }

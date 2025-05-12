@@ -1,39 +1,6 @@
 import { BaseModule } from '../../core/base-module';
-/**
- * Interface para representar informações de um grupo
- */
-export interface GroupInfo {
-    id: string;
-    subject: string;
-    subjectOwner?: string;
-    subjectTime?: number;
-    creation?: number;
-    owner?: string;
-    desc?: string;
-    descId?: string;
-    descOwner?: string;
-    descTime?: number;
-    restrict?: boolean;
-    announce?: boolean;
-    size?: number;
-    participants?: GroupParticipant[];
-}
-/**
- * Interface para representar um participante do grupo
- */
-export interface GroupParticipant {
-    id: string;
-    isAdmin?: boolean;
-    isSuperAdmin?: boolean;
-}
-/**
- * Interface para retorno de operações com grupos
- */
-export interface GroupResponse {
-    status: boolean;
-    message: string;
-    groupInfo?: GroupInfo;
-}
+import { GroupInfo, GroupResponse, GroupFilterOptions } from './types';
+export * from './types';
 /**
  * Módulo para gerenciamento de grupos
  */
@@ -61,7 +28,7 @@ export declare class GroupModule extends BaseModule {
      * @param instanceName Nome da instância (opcional se já definido no módulo)
      * @returns Status da operação
      */
-    updateSubject(groupId: string, subject: string, instanceName?: string): Promise<any>;
+    updateSubject(groupId: string | null, subject: string, instanceName?: string): Promise<any>;
     /**
      * Atualiza a descrição de um grupo
      * @param groupId ID do grupo
@@ -69,7 +36,7 @@ export declare class GroupModule extends BaseModule {
      * @param instanceName Nome da instância (opcional se já definido no módulo)
      * @returns Status da operação
      */
-    updateDescription(groupId: string, description: string, instanceName?: string): Promise<any>;
+    updateDescription(groupId: string | null, description: string, instanceName?: string): Promise<any>;
     /**
      * Obtém o código de convite de um grupo
      * @param groupId ID do grupo
@@ -86,12 +53,28 @@ export declare class GroupModule extends BaseModule {
     revokeInviteCode(groupId: string, instanceName?: string): Promise<any>;
     /**
      * Obtém todos os grupos
-     * @param instanceName Nome da instância (opcional se já definido no módulo)
+     * @param instanceNameOrOptions Nome da instância ou opções de filtro
+     * @param options Opções de filtro (se instanceName for fornecido como primeiro parâmetro)
      * @returns Lista de grupos
      */
-    fetchAll(instanceName?: string): Promise<{
+    fetchAll(instanceNameOrOptions?: string | GroupFilterOptions, options?: GroupFilterOptions): Promise<{
         groups: GroupInfo[];
     }>;
+    /**
+     * Verifica se um grupo está arquivado
+     * @param groupId ID do grupo
+     * @param instanceName Nome da instância (opcional se já definido no módulo)
+     * @returns true se o grupo estiver arquivado, false caso contrário
+     */
+    isArchived(groupId: string, instanceName?: string): Promise<boolean>;
+    /**
+     * Arquiva ou desarquiva um grupo
+     * @param groupId ID do grupo
+     * @param archive true para arquivar, false para desarquivar
+     * @param instanceName Nome da instância (opcional se já definido no módulo)
+     * @returns Status da operação
+     */
+    archiveGroup(groupId: string, archive: boolean, instanceName?: string): Promise<any>;
     /**
      * Atualiza participantes de um grupo (adicionar, remover, promover, rebaixar)
      * @param groupId ID do grupo
@@ -107,5 +90,23 @@ export declare class GroupModule extends BaseModule {
      * @param instanceName Nome da instância (opcional se já definido no módulo)
      * @returns Status da operação
      */
-    leave(groupId: string, instanceName?: string): Promise<any>;
+    leave(groupId: string | null, instanceName?: string): Promise<any>;
+    /**
+     * Obtém apenas grupos arquivados
+     * @param instanceName Nome da instância (opcional se já definido no módulo)
+     * @param getParticipants Define se deve buscar os participantes dos grupos (padrão: true)
+     * @returns Lista de grupos arquivados
+     */
+    fetchArchivedGroups(instanceName?: string, getParticipants?: boolean): Promise<{
+        groups: GroupInfo[];
+    }>;
+    /**
+     * Obtém apenas grupos não arquivados
+     * @param instanceName Nome da instância (opcional se já definido no módulo)
+     * @param getParticipants Define se deve buscar os participantes dos grupos (padrão: true)
+     * @returns Lista de grupos não arquivados
+     */
+    fetchUnarchivedGroups(instanceName?: string, getParticipants?: boolean): Promise<{
+        groups: GroupInfo[];
+    }>;
 }
