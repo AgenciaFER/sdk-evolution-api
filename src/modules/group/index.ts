@@ -1,7 +1,57 @@
 import { BaseModule } from '../../core/base-module';
-import { GroupInfo, GroupParticipant, GroupResponse, GroupFilterOptions } from './types';
 
-export * from './types';
+/**
+ * Interface para representar informações de um grupo
+ */
+export interface GroupInfo {
+  id: string;
+  subject: string;
+  subjectOwner?: string;
+  subjectTime?: number;
+  creation?: number;
+  owner?: string;
+  participantsCount?: number;
+  unreadCount?: number;
+  isLocked?: boolean;
+  isArchived?: boolean;
+  size?: number;
+}
+
+/**
+ * Interface para representar um participante de um grupo
+ */
+export interface GroupParticipant {
+  id: string;
+  name: string;
+  isAdmin: boolean;
+}
+
+/**
+ * Interface para resposta de operações de grupo
+ */
+export interface GroupResponse {
+  id: string;
+  name: string;
+  participants: GroupParticipant[];
+}
+
+/**
+ * Opções para filtrar grupos
+ */
+export interface GroupFilterOptions {
+  /**
+   * Obtém participantes dos grupos
+   * @default true
+   */
+  getParticipants?: boolean;
+  /**
+   * Filtra grupos por status de arquivamento
+   * - true: apenas grupos arquivados
+   * - false: apenas grupos não arquivados
+   * - undefined: todos os grupos (padrão)
+   */
+  archived?: boolean;
+}
 
 /**
  * Módulo para gerenciamento de grupos
