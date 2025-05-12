@@ -1,6 +1,44 @@
 import { BaseModule } from '../../core/base-module';
 
 /**
+ * Interface para representar informações de um grupo
+ */
+export interface GroupInfo {
+  id: string;
+  subject: string;
+  subjectOwner?: string;
+  subjectTime?: number;
+  creation?: number;
+  owner?: string;
+  desc?: string;
+  descId?: string;
+  descOwner?: string;
+  descTime?: number;
+  restrict?: boolean;
+  announce?: boolean;
+  size?: number;
+  participants?: GroupParticipant[];
+}
+
+/**
+ * Interface para representar um participante do grupo
+ */
+export interface GroupParticipant {
+  id: string;
+  isAdmin?: boolean;
+  isSuperAdmin?: boolean;
+}
+
+/**
+ * Interface para retorno de operações com grupos
+ */
+export interface GroupResponse {
+  status: boolean;
+  message: string;
+  groupInfo?: GroupInfo;
+}
+
+/**
  * Módulo para gerenciamento de grupos
  */
 export class GroupModule extends BaseModule {
@@ -11,9 +49,9 @@ export class GroupModule extends BaseModule {
    * @param instanceName Nome da instância (opcional se já definido no módulo)
    * @returns Informações do grupo criado
    */
-  async createGroup(name: string, participants: string[], instanceName?: string): Promise<any> {
+  async createGroup(name: string, participants: string[], instanceName?: string): Promise<GroupResponse> {
     const instance = instanceName || this.getInstance();
-    return this.http.post<any>(`/group/create/${instance}`, {
+    return this.http.post<GroupResponse>(`/group/create/${instance}`, {
       name,
       participants
     });
@@ -26,9 +64,9 @@ export class GroupModule extends BaseModule {
    * @param instanceName Nome da instância (opcional se já definido no módulo)
    * @returns Status da operação
    */
-  async updatePicture(groupId: string, image: string, instanceName?: string): Promise<any> {
+  async updatePicture(groupId: string, image: string, instanceName?: string): Promise<GroupResponse> {
     const instance = instanceName || this.getInstance();
-    return this.http.post<any>(`/group/pic/${instance}`, {
+    return this.http.post<GroupResponse>(`/group/pic/${instance}`, {
       groupId,
       image
     });
@@ -93,9 +131,9 @@ export class GroupModule extends BaseModule {
    * @param instanceName Nome da instância (opcional se já definido no módulo)
    * @returns Lista de grupos
    */
-  async fetchAll(instanceName?: string): Promise<any> {
+  async fetchAll(instanceName?: string): Promise<{ groups: GroupInfo[] }> {
     const instance = instanceName || this.getInstance();
-    return this.http.get<any>(`/group/fetchAllGroups/${instance}`);
+    return this.http.get<{ groups: GroupInfo[] }>(`/group/fetchAllGroups/${instance}`);
   }
 
   /**
@@ -131,5 +169,3 @@ export class GroupModule extends BaseModule {
     return this.http.delete<any>(`/group/leave/${instance}?id=${encodeURIComponent(groupId)}`);
   }
 }
-
-export * from './types';
