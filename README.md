@@ -157,6 +157,77 @@ try {
 
 Contribuições são bem-vindas! Sinta-se à vontade para abrir uma issue ou enviar um pull request.
 
+## Testes
+
+O projeto inclui testes unitários e de integração para garantir a qualidade do código.
+
+### Testes Unitários
+
+Para executar os testes unitários:
+
+```bash
+npm test
+```
+
+Para verificar a cobertura de testes:
+
+```bash
+npm run coverage
+```
+
+### Testes de Integração
+
+O SDK inclui ferramentas para realizar testes com uma instância real da Evolution API:
+
+1. **Configurar testes reais**:
+   ```bash
+   npm run setup:real-tests
+   ```
+   Este comando irá guiar você na configuração de uma instância real para testes, detectando configurações existentes, permitindo ativar testes de envio de mensagens e executar os testes imediatamente após a configuração.
+
+2. **Testar a conexão com a API**:
+   ```bash
+   npm run test:connection
+   ```
+   Executa um teste rápido para verificar se o SDK consegue se conectar à API.
+
+3. **Executar testes reais**:
+   ```bash
+   npm run test:real
+   ```
+   Executa todos os testes de integração com a API real.
+   
+4. **Executar testes interativamente** (selecionar módulos específicos):
+   ```bash
+   npm run test:real:interactive
+   ```
+   Interface interativa para escolher quais módulos testar.
+
+5. **Verificar ambiente de testes**:
+   ```bash
+   npm run check:env
+   ```
+   Verifica o status completo do ambiente de testes e mostra as próximas etapas possíveis.
+
+6. **Executar testes completos**:
+   ```bash
+   npm run run:complete-tests
+   ```
+   Executa todos os testes abrangentes que cobrem todas as funcionalidades da API, incluindo envio de diferentes tipos de mensagens, reações, multimídia e muito mais.
+
+#### Configuração via .env
+
+Você pode configurar os testes reais através de um arquivo `.env` na raiz do projeto:
+
+```
+EVOLUTION_API_URL=https://sua-api.exemplo.com
+EVOLUTION_API_KEY=sua-chave-de-api
+EVOLUTION_API_INSTANCE=nome-da-instancia
+TEST_PHONE=5511999999999
+```
+
+Para mais detalhes sobre como configurar e executar testes reais, consulte o [Guia de Testes Reais](./docs/testes-reais.md).
+
 ## Licença
 
 Este projeto está licenciado sob a licença MIT.

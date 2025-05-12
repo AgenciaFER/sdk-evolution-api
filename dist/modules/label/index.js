@@ -20,6 +20,31 @@ const base_module_1 = require("../../core/base-module");
  * Módulo para gerenciamento de etiquetas
  */
 class LabelModule extends base_module_1.BaseModule {
+    /**
+     * Obtém todas as etiquetas
+     * @param instanceName Nome da instância (opcional se já definido no módulo)
+     * @returns Lista de etiquetas
+     */
+    async findLabels(instanceName) {
+        const instance = instanceName || this.getInstance();
+        return this.http.get(`/label/findLabels/${instance}`);
+    }
+    /**
+     * Gerencia etiquetas (adicionar, remover)
+     * @param chatId ID do chat
+     * @param labelId ID da etiqueta
+     * @param action Ação a ser executada ('add' ou 'remove')
+     * @param instanceName Nome da instância (opcional se já definido no módulo)
+     * @returns Status da operação
+     */
+    async handleLabels(chatId, labelId, action, instanceName) {
+        const instance = instanceName || this.getInstance();
+        return this.http.post(`/label/handleLabels/${instance}`, {
+            chatId,
+            labelId,
+            action
+        });
+    }
 }
 exports.LabelModule = LabelModule;
 __exportStar(require("./types"), exports);

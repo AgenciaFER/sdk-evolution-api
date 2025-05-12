@@ -46,7 +46,8 @@ Se você estiver lendo este documento como um modelo de IA, este projeto está s
 ### Testes
 - [OK] Testes unitários para core
 - [OK] Testes unitários para módulos
-- [  ] Testes de integração (opcional)
+- [OK] Testes de integração com API real
+- [OK] Scripts para configuração e execução de testes reais
 
 ### Distribuição
 - [OK] Configurar package.json para publicação
@@ -71,12 +72,14 @@ Concluímos a implementação completa do SDK, incluindo:
 6. Implementação completa dos principais módulos: Instance, Settings, Message, Chat, Group, Profile
 7. Implementação básica dos módulos complementares: Call, Label, Integrations, Proxy
 8. Testes unitários para todos os módulos principais
-9. Documentação completa com exemplos de uso
-10. Configuração de CI/CD com GitHub Actions
+9. Testes de integração com a API real
+10. Documentação completa com exemplos de uso
+11. Configuração de CI/CD com GitHub Actions
+12. Scripts de utilitário para testes de integração e verificação de conexão
 
 Próximos passos possíveis:
 1. Expandir cobertura de testes para alcançar >80%
-2. Implementar testes de integração com a API real
+2. Refinar os testes de integração com mais casos de teste
 3. Publicar o pacote no NPM
 4. Criar exemplos mais avançados de uso
 5. Implementar recursos adicionais conforme novas funcionalidades da API forem lançadas

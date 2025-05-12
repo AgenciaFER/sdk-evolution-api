@@ -1,4 +1,5 @@
 import { BaseModule } from '../../core/base-module';
+import { ProfileInfo, BusinessProfileInfo, PrivacySettings, ProfileResponse } from './types';
 
 /**
  * Módulo para gerenciamento de perfil
@@ -9,9 +10,9 @@ export class ProfileModule extends BaseModule {
    * @param instanceName Nome da instância (opcional se já definido no módulo)
    * @returns Informações do perfil comercial
    */
-  async fetchBusinessProfile(instanceName?: string): Promise<any> {
+  async fetchBusinessProfile(instanceName?: string): Promise<BusinessProfileInfo> {
     const instance = instanceName || this.getInstance();
-    return this.http.post<any>(`/profile/fetchBusinessProfile/${instance}`, {});
+    return this.http.post<BusinessProfileInfo>(`/profile/fetchBusinessProfile/${instance}`, {});
   }
 
   /**
@@ -19,9 +20,9 @@ export class ProfileModule extends BaseModule {
    * @param instanceName Nome da instância (opcional se já definido no módulo)
    * @returns Informações do perfil
    */
-  async fetchProfile(instanceName?: string): Promise<any> {
+  async fetchProfile(instanceName?: string): Promise<ProfileInfo> {
     const instance = instanceName || this.getInstance();
-    return this.http.post<any>(`/profile/fetchProfile/${instance}`, {});
+    return this.http.post<ProfileInfo>(`/profile/fetchProfile/${instance}`, {});
   }
 
   /**
@@ -30,9 +31,9 @@ export class ProfileModule extends BaseModule {
    * @param instanceName Nome da instância (opcional se já definido no módulo)
    * @returns Status da operação
    */
-  async updateProfileName(name: string, instanceName?: string): Promise<any> {
+  async updateProfileName(name: string, instanceName?: string): Promise<ProfileResponse> {
     const instance = instanceName || this.getInstance();
-    return this.http.post<any>(`/profile/updateProfileName/${instance}`, {
+    return this.http.post<ProfileResponse>(`/profile/updateProfileName/${instance}`, {
       name
     });
   }
@@ -43,9 +44,9 @@ export class ProfileModule extends BaseModule {
    * @param instanceName Nome da instância (opcional se já definido no módulo)
    * @returns Status da operação
    */
-  async updateProfileStatus(status: string, instanceName?: string): Promise<any> {
+  async updateProfileStatus(status: string, instanceName?: string): Promise<ProfileResponse> {
     const instance = instanceName || this.getInstance();
-    return this.http.post<any>(`/profile/updateProfileStatus/${instance}`, {
+    return this.http.post<ProfileResponse>(`/profile/updateProfileStatus/${instance}`, {
       status
     });
   }
@@ -56,9 +57,9 @@ export class ProfileModule extends BaseModule {
    * @param instanceName Nome da instância (opcional se já definido no módulo)
    * @returns Status da operação
    */
-  async updateProfilePicture(picture: string, instanceName?: string): Promise<any> {
+  async updateProfilePicture(picture: string, instanceName?: string): Promise<ProfileResponse> {
     const instance = instanceName || this.getInstance();
-    return this.http.post<any>(`/profile/updateProfilePicture/${instance}`, {
+    return this.http.post<ProfileResponse>(`/profile/updateProfilePicture/${instance}`, {
       picture
     });
   }
@@ -68,9 +69,9 @@ export class ProfileModule extends BaseModule {
    * @param instanceName Nome da instância (opcional se já definido no módulo)
    * @returns Status da operação
    */
-  async removeProfilePicture(instanceName?: string): Promise<any> {
+  async removeProfilePicture(instanceName?: string): Promise<ProfileResponse> {
     const instance = instanceName || this.getInstance();
-    return this.http.delete<any>(`/profile/removeProfilePicture/${instance}`);
+    return this.http.delete<ProfileResponse>(`/profile/removeProfilePicture/${instance}`);
   }
 
   /**
@@ -78,9 +79,9 @@ export class ProfileModule extends BaseModule {
    * @param instanceName Nome da instância (opcional se já definido no módulo)
    * @returns Configurações de privacidade
    */
-  async fetchPrivacySettings(instanceName?: string): Promise<any> {
+  async fetchPrivacySettings(instanceName?: string): Promise<PrivacySettings> {
     const instance = instanceName || this.getInstance();
-    return this.http.get<any>(`/profile/fetchPrivacySettings/${instance}`);
+    return this.http.get<PrivacySettings>(`/profile/fetchPrivacySettings/${instance}`);
   }
 
   /**
@@ -90,18 +91,11 @@ export class ProfileModule extends BaseModule {
    * @returns Status da operação
    */
   async updatePrivacySettings(
-    privacy: {
-      lastSeen?: 'all' | 'contacts' | 'none';
-      online?: 'all' | 'match_last_seen';
-      profilePhoto?: 'all' | 'contacts' | 'none';
-      status?: 'all' | 'contacts' | 'none';
-      readReceipts?: 'all' | 'none';
-      groupsAdd?: 'all' | 'contacts' | 'contact_blacklist' | 'none';
-    },
+    privacy: PrivacySettings,
     instanceName?: string
-  ): Promise<any> {
+  ): Promise<ProfileResponse> {
     const instance = instanceName || this.getInstance();
-    return this.http.post<any>(`/profile/updatePrivacySettings/${instance}`, privacy);
+    return this.http.post<ProfileResponse>(`/profile/updatePrivacySettings/${instance}`, privacy);
   }
 }
 
